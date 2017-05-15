@@ -27,7 +27,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void attemptInstagramAuthorization() {
-
+        HttpManager.instagramAuth();
     }
 
 
