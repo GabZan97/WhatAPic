@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">WhatAPic</string>
+    <string name="activity_login_title">Sign in</string>
+    <string name="activity_gallery_title">My photos</string>
+
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+
+    <string name="action_sign_in">Sign in</string>
 </resources>
