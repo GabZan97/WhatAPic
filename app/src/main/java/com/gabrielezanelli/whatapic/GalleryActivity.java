@@ -3,11 +3,15 @@ package com.gabrielezanelli.whatapic;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import butterknife.ButterKnife;
+
 public class GalleryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+        ButterKnife.bind(this);
+
     }
 }

@@ -22,6 +22,22 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter android:label="@string/action_sign_in">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Accepts URIs that begin with "http://www.whatapic.com/signin” -->
+                <data android:scheme="http"
+                    android:host="www.whatapic.com"
+                    android:pathPrefix="/signin" />
+                <!-- note that the leading "/" is required for pathPrefix-->
+                <!-- Accepts URIs that begin with "whatapic://signin” -->
+                <data android:scheme="whatapic"
+                    android:host="signin" />
+
+            </intent-filter>
         </activity>
 
         <activity

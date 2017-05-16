@@ -15,40 +15,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     >
 
-    <!-- Loading progress bar -->
-    <ProgressBar
-        android:id="@+id/progress_login"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone"/>
-
     <!-- Username textbox -->
-    <EditText
-        android:id="@+id/text_username"
+    <TextView
+        android:text="@string/welcome"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/prompt_username"
-        android:maxLines="1" />
+        android:layout_height="wrap_content" />
 
-    <!-- Password textbox -->
-    <EditText
-        android:id="@+id/text_password"
+    <TextView
+        android:text="@string/sign_in"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/prompt_password"
-        android:inputType="textPassword"
-        android:maxLines="1" />
+        android:layout_height="wrap_content" />
 
-    <Button
+    <ImageButton
         android:id="@+id/button_sign_in"
-        style="?android:textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/action_sign_in"
-        android:textStyle="bold"/>
+        android:background="@null"
+        android:src="@drawable/instagram_icon"
+
+        android:layout_width="@dimen/instagram_icon"
+        android:layout_height="@dimen/instagram_icon"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true" />
+
+
 
 
 </LinearLayout>

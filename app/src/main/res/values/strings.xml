@@ -5,6 +5,16 @@
 
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
-
     <string name="action_sign_in">Sign in</string>
+
+    <string name="welcome">Welcome to What a Pic!</string>
+    <string name="sign_in">Please sign in to your Instagram account to see all your beautiful photos</string>
+
+    <string name="log_tag">Android LOG</string>
+
+    <string name="client_id">782272ecc6664711870a7d33847decd1</string>
+    <string name="redirect_uri">http://www.whatapic.com/signin</string>
+    <string name="instagram_api">https://api.instagram.com/oauth/authorize</string>
+    <string name="response_type">code</string>
+
 </resources>
