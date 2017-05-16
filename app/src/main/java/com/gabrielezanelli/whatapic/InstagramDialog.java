@@ -4,11 +4,8 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.Typeface;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.content.Context;
@@ -26,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import butterknife.BindString;
+import butterknife.ButterKnife;
 
 public class InstagramDialog extends Dialog {
     private ProgressDialog loadingDialog;
@@ -37,7 +35,8 @@ public class InstagramDialog extends Dialog {
 
     private InstagramDialogListener instagramListener;
 
-    static final FrameLayout.LayoutParams totalMatch = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+    static final FrameLayout.LayoutParams totalMatch = new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT);
 
     @BindString(R.string.log_tag) String TAG;
@@ -54,6 +53,8 @@ public class InstagramDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        ButterKnife.bind(this);
 
         loadingDialog = new ProgressDialog(getContext());
 
@@ -64,7 +65,6 @@ public class InstagramDialog extends Dialog {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setPadding(20,20,20,20);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setUpWebView();
 
         Display display = getWindow().getWindowManager().getDefaultDisplay();
@@ -104,6 +104,7 @@ public class InstagramDialog extends Dialog {
         WebSettings webSettings = webView.getSettings();
 
         webSettings.setSaveFormData(false);
+        webSettings.setSavePassword(false);
 
         linearLayout.addView(webView);
     }
@@ -171,7 +172,7 @@ public class InstagramDialog extends Dialog {
     }
 
     public interface InstagramDialogListener {
-        public abstract void onSuccess(String code);
+        public abstract void onSuccess(String token);
         public abstract void onCancel();
         public abstract void onError(String error);
     }

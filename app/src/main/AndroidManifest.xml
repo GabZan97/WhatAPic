@@ -16,10 +16,9 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/activity_login_title">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -40,10 +39,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".GalleryActivity"
-            android:label="@string/activity_gallery_title">
-    </activity>
     </application>
 
 </manifest>

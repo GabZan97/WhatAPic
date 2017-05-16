@@ -20,7 +20,7 @@ public class InstagramPreferences {
         instagramPreferences = context.getSharedPreferences(preferences, Context.MODE_PRIVATE);
     }
 
-    public void saveSettings(InstagramUser user) {
+    public void savePreferences(InstagramUser user) {
         Editor editor = instagramPreferences.edit();
 
         editor.putString(accessToken, user.accessToken);
@@ -32,7 +32,7 @@ public class InstagramPreferences {
         editor.apply();
     }
 
-    public void deleteSettings() {
+    public void deletePreferences() {
         Editor editor = instagramPreferences.edit();
 
         editor.putString(accessToken, "");
@@ -44,7 +44,7 @@ public class InstagramPreferences {
         editor.apply();
     }
 
-    public InstagramUser getUser() {
+    public InstagramUser getUserFromPreferences() {
         if (instagramPreferences.getString(accessToken, "").equals("")) {
             return null;
         }
