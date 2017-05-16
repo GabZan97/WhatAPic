@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".SignInActivity"
+            android:name=".MainActivity"
             android:label="@string/activity_login_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

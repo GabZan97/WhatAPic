@@ -9,8 +9,16 @@
 
     <string name="welcome">Welcome to What a Pic!</string>
     <string name="sign_in">Please sign in to your Instagram account to see all your beautiful photos</string>
+    <string name="loading_message">Loading…</string>
 
     <string name="log_tag">Android LOG</string>
+
+    <string name="instagram_preferences">key_instagram_shared_preferences</string>
+    <string name="preferences_username">key_instagram_shared_preferences_username</string>
+    <string name="preferences_user_id">key_instagram_shared_preferences_user_id</string>
+    <string name="preferences_fullname">key_instagram_shared_preferences_fullname</string>
+    <string name="preferences_access_token">key_instagram_shared_preferences_access_token</string>
+    <string name="preferences_profile_pic">key_instagram_shared_preferences_profile_pic</string>
 
     <string name="client_id">782272ecc6664711870a7d33847decd1</string>
     <string name="redirect_uri">http://www.whatapic.com/signin</string>

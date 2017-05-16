@@ -5,6 +5,4 @@
 
     <dimen name="instagram_icon">72dp</dimen>
 
-    <dimen name="dialog_margin">8</dimen>
-    <dimen name="dialog_padding">2</dimen>
 </resources>

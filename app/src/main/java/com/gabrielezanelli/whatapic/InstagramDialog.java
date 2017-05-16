@@ -24,29 +24,24 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import butterknife.BindDimen;
 import butterknife.BindString;
 
 public class InstagramDialog extends Dialog {
     private ProgressDialog loadingDialog;
     private WebView webView;
     private LinearLayout linearLayout;
-    private TextView title;
 
     private String authenticationUrl;
     private String redirectUri;
 
     private InstagramDialogListener instagramListener;
 
-    static final FrameLayout.LayoutParams FILL = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+    static final FrameLayout.LayoutParams totalMatch = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT);
 
-    @BindDimen(R.dimen.dialog_margin) int dialogMargin;
-    @BindDimen(R.dimen.dialog_padding) int dialogPadding;
-
     @BindString(R.string.log_tag) String TAG;
+    @BindString(R.string.loading_message) String loadingMessage;
 
     public InstagramDialog(Context context, String authUrl, String redirectUri, InstagramDialogListener listener) {
         super(context);
@@ -63,33 +58,27 @@ public class InstagramDialog extends Dialog {
         loadingDialog = new ProgressDialog(getContext());
 
         loadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        loadingDialog.setMessage("Loading...");
+        loadingDialog.setMessage(loadingMessage);
 
         linearLayout = new LinearLayout(getContext());
-
         linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(20,20,20,20);
 
-        setUpTitle();
-
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setUpWebView();
 
-        Display display 	= getWindow().getWindowManager().getDefaultDisplay();
-        Point outSize		= new Point();
+        Display display = getWindow().getWindowManager().getDefaultDisplay();
+        Point outSize = new Point();
 
-        int width			= 0;
-        int height			= 0;
+        int width = 0;
+        int height = 0;
 
         double[] dimensions = new double[2];
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            display.getSize(outSize);
+        display.getSize(outSize);
 
-            width	= outSize.x;
-            height	= outSize.y;
-        } else {
-            width	= display.getWidth();
-            height	= display.getHeight();
-        }
+        width	= outSize.x;
+        height	= outSize.y;
 
         if (width < height) {
             dimensions[0]	= 0.87 * width;
@@ -102,20 +91,6 @@ public class InstagramDialog extends Dialog {
         addContentView(linearLayout, new FrameLayout.LayoutParams((int) dimensions[0], (int) dimensions[1]));
     }
 
-    private void setUpTitle() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        title = new TextView(getContext());
-
-        title.setText("Login - Instagram");
-        title.setTextColor(Color.WHITE);
-        title.setTypeface(Typeface.DEFAULT_BOLD);
-        title.setBackgroundColor(0xFF163753);
-        title.setPadding(dialogMargin + dialogPadding, dialogMargin, dialogMargin, dialogMargin);
-
-        linearLayout.addView(title);
-    }
-
     private void setUpWebView() {
         webView = new WebView(getContext());
 
@@ -124,7 +99,7 @@ public class InstagramDialog extends Dialog {
         webView.setWebViewClient(new InstagramWebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(authenticationUrl);
-        webView.setLayoutParams(FILL);
+        webView.setLayoutParams(totalMatch);
 
         WebSettings webSettings = webView.getSettings();
 
@@ -164,10 +139,8 @@ public class InstagramDialog extends Dialog {
                 }
 
                 InstagramDialog.this.dismiss();
-
                 return true;
             }
-
             return false;
         }
 
@@ -192,12 +165,6 @@ public class InstagramDialog extends Dialog {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-
-            String title = webView.getTitle();
-
-            if (title != null && title.length() > 0) {
-                InstagramDialog.this.title.setText(title);
-            }
 
             loadingDialog.dismiss();
         }

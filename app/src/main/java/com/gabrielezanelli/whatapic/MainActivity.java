@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
  * Starting activity containing elements for obtaining user's access to instagram's account
  */
 
-public class SignInActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     @BindView(R.id.button_sign_in) ImageButton buttonSignIn;
     @BindString (R.string.client_id) String clientId;
     @BindString (R.string.redirect_uri) String redirectUri;
@@ -25,7 +25,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
