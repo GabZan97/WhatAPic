@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
         InstagramPreferences instagramPreferences = new InstagramPreferences(this);
 
+        getSupportActionBar().hide();
+
         if (savedInstanceState == null)
             getFragmentManager().beginTransaction().add(
                     R.id.fragment_container,new SignInFragment()).commit();

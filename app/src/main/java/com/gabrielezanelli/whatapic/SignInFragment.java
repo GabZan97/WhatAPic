@@ -2,6 +2,7 @@ package com.gabrielezanelli.whatapic;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class SignInFragment extends Fragment {
                 instagramUser.setAccessToken(token);
 
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container,new GalleryFragment()).commit();
+                ((AppCompatActivity)getActivity()).getSupportActionBar().show();
             }
 
             @Override

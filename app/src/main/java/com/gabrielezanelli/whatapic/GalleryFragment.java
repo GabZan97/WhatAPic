@@ -2,15 +2,26 @@ package com.gabrielezanelli.whatapic;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.gabrielezanelli.whatapic.MainActivity.instagramUser;
 
 public class GalleryFragment extends Fragment {
 
+    @BindView(R.id.uno) TextView textView;
+    @BindView(R.id.galleryRecyclerView) RecyclerView galleryRecyclerView;
+
     public GalleryFragment() {
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,8 +31,28 @@ public class GalleryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_gallery, container, false);
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+        ButterKnife.bind(this,view);
+
+        galleryRecyclerView.setHasFixedSize(true);
+        galleryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        final GalleryAdapter galleryAdapter = new GalleryAdapter();
+        galleryRecyclerView.setAdapter(galleryAdapter);
+
+        textView.setText("click me");
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.print("Clicked");
+                textView.setText(instagramUser.fullName);
+                new InstagramRequestManager().requestUserPhotos(galleryAdapter);
+            }
+        });
+
+        return view;
     }
+
 
 
 }

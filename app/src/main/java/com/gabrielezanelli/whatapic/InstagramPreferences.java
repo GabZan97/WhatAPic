@@ -6,13 +6,15 @@ import android.content.Context;
 
 import butterknife.BindString;
 
+import static com.gabrielezanelli.whatapic.MainActivity.instagramUser;
+
 public class InstagramPreferences {
-    private SharedPreferences instagramPreferences;
+    private static SharedPreferences instagramPreferences;
 
     @BindString (R.string.instagram_preferences) String preferences;
     @BindString (R.string.preferences_user_id) String userId;
     @BindString (R.string.preferences_username) String username;
-    @BindString (R.string.preferences_fullname) String fullName;
+    @BindString (R.string.preferences_fullname)  String fullName;
     @BindString (R.string.preferences_profile_pic) String profilePicture;
     @BindString (R.string.preferences_access_token) String accessToken;
 
@@ -20,16 +22,19 @@ public class InstagramPreferences {
         instagramPreferences = context.getSharedPreferences(preferences, Context.MODE_PRIVATE);
     }
 
-    public void savePreferences(InstagramUser user) {
-        Editor editor = instagramPreferences.edit();
+    public void savePreferences() {
+        InstagramUser user = instagramUser;
+        if (user != null) {
+            Editor editor = instagramPreferences.edit();
 
-        editor.putString(accessToken, user.accessToken);
-        editor.putString(userId, user.id);
-        editor.putString(username, user.username);
-        editor.putString(fullName, user.fullName);
-        editor.putString(profilePicture, user.profilePicture);
+            editor.putString(accessToken, user.accessToken);
+            editor.putString(userId, user.id);
+            editor.putString(username, user.username);
+            editor.putString(fullName, user.fullName);
+            editor.putString(profilePicture, user.profilePictureUrl);
 
-        editor.apply();
+            editor.apply();
+        }
     }
 
     public void deletePreferences() {
@@ -54,7 +59,7 @@ public class InstagramPreferences {
         user.id	= instagramPreferences.getString(userId, "");
         user.username = instagramPreferences.getString(username, "");
         user.fullName = instagramPreferences.getString(fullName, "");
-        user.profilePicture	= instagramPreferences.getString(profilePicture, "");
+        user.profilePictureUrl = instagramPreferences.getString(profilePicture, "");
         user.accessToken = instagramPreferences.getString(accessToken, "");
 
         return user;
