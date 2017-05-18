@@ -1,15 +1,13 @@
 package com.gabrielezanelli.whatapic;
 
 import android.content.Context;
-import android.widget.ImageView;
+import android.os.Handler;
 
-import com.google.gson.Gson;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,7 +75,7 @@ public class InstagramRequestManager {
         });
     }
 
-    public void requestUserPhotos(final GalleryAdapter galleryAdapter) {
+    public void requestUserPhotos(final GalleryAdapter galleryAdapter,final Context context) {
         OkHttpClient client = getInstance();
 
         String userInfoUrl = "https://api.instagram.com/v1/users/self/media/recent";
@@ -106,14 +104,21 @@ public class InstagramRequestManager {
                     System.out.println("Request was Successful:\n"+ jsonString);
 
                     try {
-                        JSONObject json = new JSONObject(jsonString);
-                        JSONArray dataJson = json.getJSONArray("data");
 
-                        JSONObject data = (JSONObject) dataJson.get(0);
-                        String thumbnailUrl = data.getJSONObject("images")
-                                .getJSONObject("thumbnail").getString("url");
+                        JSONArray jsonArray= new JSONObject(jsonString).getJSONArray("data");
+                        JSONObject data;
+                        for(int i=0; i<jsonArray.length();i++) {
+                            data = (JSONObject) jsonArray.get(i);
+                            String thumbnailUrl = data.getJSONObject("images")
+                                    .getJSONObject("thumbnail").getString("url");
+                            galleryAdapter.addUrl(thumbnailUrl);
+                        }
 
-                        galleryAdapter.addUrl(thumbnailUrl);
+                        new Handler(context.getMainLooper()).post(new Runnable(){
+                            public void run(){
+                                galleryAdapter.notifyDataSetChanged();
+                            }
+                        });
                     }
                     catch (JSONException e) {
                         e.printStackTrace();

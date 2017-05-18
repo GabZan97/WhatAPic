@@ -29,24 +29,23 @@ public class GalleryFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.bind(this,view);
 
-        galleryRecyclerView.setHasFixedSize(true);
-        galleryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+        System.out.println("Fragment on create");
         final GalleryAdapter galleryAdapter = new GalleryAdapter();
         galleryRecyclerView.setAdapter(galleryAdapter);
+        galleryRecyclerView.setHasFixedSize(true);
+        galleryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         textView.setText("click me");
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.print("Clicked");
                 textView.setText(instagramUser.fullName);
-                new InstagramRequestManager().requestUserPhotos(galleryAdapter);
+                new InstagramRequestManager().requestUserPhotos(galleryAdapter,v.getContext());
             }
         });
 
