@@ -1,7 +1,8 @@
 package com.gabrielezanelli.whatapic;
 
-import android.os.AsyncTask;
-import java.net.URL;
+/**
+ * Class representing user
+ */
 
 public class InstagramUser {
     public String id;
@@ -22,7 +23,6 @@ public class InstagramUser {
 
     public void setAccessToken(String accessToken){
         this.accessToken = accessToken;
-        new GetUserInfoTask().execute();
     }
 
     public void setUserInformation(String id, String username, String fullName, String profilePictureUrl){
@@ -32,22 +32,5 @@ public class InstagramUser {
         this.profilePictureUrl = profilePictureUrl;
     }
 
-
-    public class GetUserInfoTask extends AsyncTask<URL, Integer, Long> {
-
-        public GetUserInfoTask() {
-        }
-
-        protected Long doInBackground(URL... urls) {
-            long result = 0;
-
-            new InstagramRequestManager().requestUserInformation();
-            return result;
-        }
-
-        protected void onPostExecute(Long result) {
-            //savePreferences();
-        }
-    }
 
 }

@@ -2,6 +2,7 @@ package com.gabrielezanelli.whatapic;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.gabrielezanelli.whatapic.MainActivity.instagramUser;
+
+/**
+ * Fragment containing user's instagram photos and info
+ */
 
 public class GalleryFragment extends Fragment {
 
@@ -34,18 +39,17 @@ public class GalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.bind(this,view);
 
-        System.out.println("Fragment on create");
         final GalleryAdapter galleryAdapter = new GalleryAdapter();
         galleryRecyclerView.setAdapter(galleryAdapter);
         galleryRecyclerView.setHasFixedSize(true);
-        galleryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        galleryRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),4));
 
         textView.setText("click me");
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textView.setText(instagramUser.fullName);
-                new InstagramRequestManager().requestUserPhotos(galleryAdapter,v.getContext());
+                new InstagramRequestManager(getActivity()).requestUserPhotos(galleryAdapter);
             }
         });
 

@@ -8,6 +8,10 @@ import butterknife.BindString;
 
 import static com.gabrielezanelli.whatapic.MainActivity.instagramUser;
 
+/**
+ * Class for managing user's information in android shared preferences
+ */
+
 public class InstagramPreferences {
     private static SharedPreferences instagramPreferences;
 

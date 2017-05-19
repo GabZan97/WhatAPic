@@ -5,6 +5,10 @@ import android.os.Bundle;
 
 import butterknife.ButterKnife;
 
+/**
+ * Main activity containing multiple fragments
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     public static InstagramUser instagramUser = new InstagramUser();
@@ -17,7 +21,11 @@ public class MainActivity extends AppCompatActivity {
 
         InstagramPreferences instagramPreferences = new InstagramPreferences(this);
 
-        getSupportActionBar().hide();
+        try {
+            getSupportActionBar().hide();
+        } catch (NullPointerException ex) {
+            System.out.println("Failed to hide action bar");
+        }
 
         if (savedInstanceState == null)
             getFragmentManager().beginTransaction().add(

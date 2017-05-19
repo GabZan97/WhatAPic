@@ -1,11 +1,14 @@
 package com.gabrielezanelli.whatapic;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
 
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.content.Context;
@@ -25,6 +28,10 @@ import android.widget.LinearLayout;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 
+/**
+ * Dialog containing WebView for instagram's authorization page
+ */
+
 public class InstagramDialog extends Dialog {
     private ProgressDialog loadingDialog;
     private WebView webView;
@@ -42,11 +49,12 @@ public class InstagramDialog extends Dialog {
     @BindString(R.string.log_tag) String TAG;
     @BindString(R.string.loading_message) String loadingMessage;
 
-    public InstagramDialog(Context context, String authUrl, String redirectUri, InstagramDialogListener listener) {
+    public InstagramDialog(Context context, String authenticationUrl, String redirectUri,
+                           InstagramDialogListener instagramListener) {
         super(context);
 
-        authenticationUrl = authUrl;
-        instagramListener = listener;
+        this.authenticationUrl = authenticationUrl;
+        this.instagramListener = instagramListener;
         this.redirectUri = redirectUri;
     }
 
@@ -67,6 +75,7 @@ public class InstagramDialog extends Dialog {
 
         setUpWebView();
 
+        // TODO: Modify
         Display display = getWindow().getWindowManager().getDefaultDisplay();
         Point outSize = new Point();
 
@@ -125,25 +134,60 @@ public class InstagramDialog extends Dialog {
     private class InstagramWebViewClient extends WebViewClient {
 
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d(TAG, "Redirecting URL " + url);
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            if (Build.VERSION.SDK_INT > 18) {
 
-            if (url.startsWith(redirectUri)) {
-                if (url.contains("access_token")) {
-                    String temp[] = url.split("=");
+                String url = request.getUrl().toString();
 
-                    instagramListener.onSuccess(temp[1]);
-                } else if (url.contains("error")) {
-                    String temp[] = url.split("=");
+                Log.d(TAG, "Redirecting URL " + url);
 
-                    instagramListener.onError(temp[temp.length-1]);
+                if (url.startsWith(redirectUri)) {
+                    if (url.contains("access_token")) {
+                        String temp[] = url.split("=");
+
+                        instagramListener.onSuccess(temp[1]);
+                    } else if (url.contains("error")) {
+                        String temp[] = url.split("=");
+
+                        instagramListener.onError(temp[temp.length - 1]);
+                    }
+
+                    InstagramDialog.this.dismiss();
+                    return true;
                 }
-
-                InstagramDialog.this.dismiss();
-                return true;
+                return false;
             }
-            return false;
+            else
+                return super.shouldOverrideUrlLoading(view, request);
         }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (Build.VERSION.SDK_INT <= 18) {
+
+                Log.d(TAG, "Redirecting URL " + url);
+
+                if (url.startsWith(redirectUri)) {
+                    if (url.contains("access_token")) {
+                        String temp[] = url.split("=");
+
+                        instagramListener.onSuccess(temp[1]);
+                    } else if (url.contains("error")) {
+                        String temp[] = url.split("=");
+
+                        instagramListener.onError(temp[temp.length - 1]);
+                    }
+
+                    InstagramDialog.this.dismiss();
+                    return true;
+                }
+                return false;
+            }
+            else
+                return super.shouldOverrideUrlLoading(view, url);
+        }
+
+
 
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error ) {

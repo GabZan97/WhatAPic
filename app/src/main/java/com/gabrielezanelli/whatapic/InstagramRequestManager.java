@@ -1,5 +1,6 @@
 package com.gabrielezanelli.whatapic;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 
@@ -15,11 +16,27 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import butterknife.BindString;
+import butterknife.ButterKnife;
+
 import static com.gabrielezanelli.whatapic.MainActivity.instagramUser;
+
+/**
+ * Class for http request through instagram's api
+ */
 
 public class InstagramRequestManager {
 
+    @BindString(R.string.instagram_api_user_information) String userInfoUrl;
+    @BindString(R.string.instagram_api_user_media) String userMediaUrl;
+
     private static OkHttpClient clientInstance;
+    private Context context;
+
+    public InstagramRequestManager(Activity activity){
+        context = activity.getApplicationContext();
+        ButterKnife.bind(this,activity);
+    }
 
     private static OkHttpClient getInstance() {
         if (clientInstance == null)
@@ -30,8 +47,6 @@ public class InstagramRequestManager {
     public void requestUserInformation() {
         OkHttpClient client = getInstance();
 
-        String userInfoUrl = "https://api.instagram.com/v1/users/self";
-
         HttpUrl.Builder urlBuilder = HttpUrl.parse(userInfoUrl).newBuilder();
         urlBuilder.addQueryParameter("access_token", instagramUser.getAccessToken());
 
@@ -53,21 +68,9 @@ public class InstagramRequestManager {
                     throw new IOException("Unexpected code " + response);
                 } else {
                     String jsonString = response.body().string();
-                    System.out.println("Request was Successful:\n"+ jsonString);
-                    String id = "", username = "", fullName = "", profilePictureUrl = "";
-                    try {
-                        JSONObject json = new JSONObject(jsonString);
-                        JSONObject dataJson = json.getJSONObject("data");
-                        id = dataJson.getString("id");
-                        username = dataJson.getString("username");
-                        fullName = dataJson.getString("full_name");
-                        profilePictureUrl = dataJson.getString("profile_picture");
+                    System.out.println("Request was Successful");
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    instagramUser.setUserInformation(id,username,fullName,profilePictureUrl);
+                    parseAndSetUserInformation(jsonString);
                 }
             }
 
@@ -75,12 +78,28 @@ public class InstagramRequestManager {
         });
     }
 
-    public void requestUserPhotos(final GalleryAdapter galleryAdapter,final Context context) {
+    private void parseAndSetUserInformation(String jsonString){
+        String id = "", username = "", fullName = "", profilePictureUrl = "";
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            JSONObject dataJson = json.getJSONObject("data");
+            id = dataJson.getString("id");
+            username = dataJson.getString("username");
+            fullName = dataJson.getString("full_name");
+            profilePictureUrl = dataJson.getString("profile_picture");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        instagramUser.setUserInformation(id,username,fullName,profilePictureUrl);
+        // TODO: Save settings in shared preferences
+    }
+
+    public void requestUserPhotos(final GalleryAdapter galleryAdapter) {
         OkHttpClient client = getInstance();
 
-        String userInfoUrl = "https://api.instagram.com/v1/users/self/media/recent";
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(userInfoUrl).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(userMediaUrl).newBuilder();
         urlBuilder.addQueryParameter("access_token", instagramUser.getAccessToken());
 
         String url = urlBuilder.build().toString();
@@ -101,41 +120,34 @@ public class InstagramRequestManager {
                     throw new IOException("Unexpected code " + response);
                 } else {
                     String jsonString = response.body().string();
-                    System.out.println("Request was Successful:\n"+ jsonString);
+                    System.out.println("Request was Successful");
 
-                    try {
-
-                        JSONArray jsonArray= new JSONObject(jsonString).getJSONArray("data");
-                        JSONObject data;
-                        for(int i=0; i<jsonArray.length();i++) {
-                            data = (JSONObject) jsonArray.get(i);
-                            String thumbnailUrl = data.getJSONObject("images")
-                                    .getJSONObject("thumbnail").getString("url");
-                            galleryAdapter.addUrl(thumbnailUrl);
-                        }
-
-                        new Handler(context.getMainLooper()).post(new Runnable(){
-                            public void run(){
-                                galleryAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    }
-                    catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                    parseAndAddUserPhotos(jsonString,galleryAdapter);
                 }
-
-
-
             }
-
-
         });
     }
 
+    private void parseAndAddUserPhotos (String jsonString, final GalleryAdapter galleryAdapter) {
+        try {
 
+            JSONArray jsonArray= new JSONObject(jsonString).getJSONArray("data");
+            JSONObject data;
+            for(int i=0; i<jsonArray.length();i++) {
+                data = (JSONObject) jsonArray.get(i);
+                String thumbnailUrl = data.getJSONObject("images")
+                        .getJSONObject("thumbnail").getString("url");
+                galleryAdapter.addUrl(thumbnailUrl);
+            }
 
-
-
+            new Handler(context.getMainLooper()).post(new Runnable(){
+                public void run(){
+                    galleryAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }
