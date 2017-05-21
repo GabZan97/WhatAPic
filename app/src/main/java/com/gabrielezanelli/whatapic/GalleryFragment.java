@@ -98,6 +98,5 @@ public class GalleryFragment extends Fragment {
 
     public void logout() {
         ((MainActivity)getActivity()).logout();
-
     }
 }

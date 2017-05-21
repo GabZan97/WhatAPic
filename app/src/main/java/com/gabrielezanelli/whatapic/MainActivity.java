@@ -49,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    /**
+     * Delete application cache completely
+     * @param context context of the application
+     */
     public static void deleteCache(Context context) {
         try {
             File dir = context.getCacheDir();

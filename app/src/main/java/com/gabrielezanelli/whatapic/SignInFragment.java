@@ -57,8 +57,6 @@ public class SignInFragment extends Fragment {
                 redirectUri, new InstagramDialog.InstagramDialogListener() {
             @Override
             public void onSuccess(String token) {
-                System.out.print("Success! The token is: " + token + "\n");
-
                 instagramRequestManager.requestUserInformation(token);
 
                 getFragmentManager().beginTransaction()
@@ -68,12 +66,11 @@ public class SignInFragment extends Fragment {
 
             @Override
             public void onCancel() {
-                System.out.print("Cancelled\n");
             }
 
             @Override
             public void onError(String error) {
-                System.out.print("Error: " + error + "\n");
+                Toast.makeText(getContext(),R.string.connection_error, Toast.LENGTH_LONG).show();
             }
         });
 

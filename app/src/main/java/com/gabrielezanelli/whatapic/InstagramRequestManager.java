@@ -106,14 +106,16 @@ public class InstagramRequestManager {
             }
 
             @Override
-            public void onResponse(Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                } else {
-                    String jsonString = response.body().string();
-                    System.out.println("Request was Successful");
-
-                    parseAndSetUserInformation(jsonString);
+            public void onResponse(Response response) {
+                try {
+                    if (!response.isSuccessful()) {
+                        throw new IOException("Unexpected code " + response);
+                    } else {
+                        String jsonString = response.body().string();
+                        parseAndSetUserInformation(jsonString);
+                    }
+                } catch (IOException ex){
+                    Toast.makeText(context,R.string.instagram_request_fail,Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -148,7 +150,7 @@ public class InstagramRequestManager {
         OkHttpClient client = getInstance();
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse(userMediaUrl).newBuilder();
-        urlBuilder.addQueryParameter("access_token", instagramUser.accessToken);
+        urlBuilder.addQueryParameter(paramAccessToken, instagramUser.accessToken);
 
         String url = urlBuilder.build().toString();
 

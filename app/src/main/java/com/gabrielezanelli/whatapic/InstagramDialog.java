@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import butterknife.BindInt;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 
@@ -45,6 +46,8 @@ public class InstagramDialog extends Dialog {
 
     @BindString(R.string.loading_message)
     String loadingMessage;
+    @BindInt(R.integer.instagram_dialog_padding)
+    int dialogPadding;
 
     public InstagramDialog(Context context, String authenticationUrl, String redirectUri,
                            InstagramDialogListener instagramListener) {
@@ -67,16 +70,14 @@ public class InstagramDialog extends Dialog {
 
         linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setPadding(20, 20, 20, 20);
+        linearLayout.setPadding(dialogPadding, dialogPadding, dialogPadding, dialogPadding);
 
         setUpWebView();
 
-        // TODO: Modify
         Display display = getWindow().getWindowManager().getDefaultDisplay();
         Point outSize = new Point();
 
-        int width = 0;
-        int height = 0;
+        int width, height;
 
         double[] dimensions = new double[2];
 
@@ -87,7 +88,7 @@ public class InstagramDialog extends Dialog {
 
         if (width < height) {
             dimensions[0] = 0.87 * width;
-            dimensions[1] = 0.45 * height;//0.82 * height;
+            dimensions[1] = 0.45 * height;
         } else {
             dimensions[0] = 0.75 * width;
             dimensions[1] = 0.75 * height;
@@ -109,12 +110,6 @@ public class InstagramDialog extends Dialog {
         webSettings.setSaveFormData(false);
 
         linearLayout.addView(webView);
-    }
-
-    public void clearCache() {
-        webView.clearCache(true);
-        webView.clearHistory();
-        webView.clearFormData();
     }
 
     @Override
