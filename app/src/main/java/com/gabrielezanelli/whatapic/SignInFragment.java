@@ -33,17 +33,17 @@ public class SignInFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
-        ButterKnife.bind(this,view);
+            View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
+            ButterKnife.bind(this, view);
 
-        buttonSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptInstagramWebAuthorization();
-            }
-        });
+            buttonSignIn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    attemptInstagramWebAuthorization();
+                }
+            });
 
-        return view;
+            return view;
     }
 
     private void attemptInstagramWebAuthorization() {

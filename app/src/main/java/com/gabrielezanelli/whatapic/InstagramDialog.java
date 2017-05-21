@@ -91,7 +91,7 @@ public class InstagramDialog extends Dialog {
 
         if (width < height) {
             dimensions[0]	= 0.87 * width;
-            dimensions[1]	= 0.82 * height;
+            dimensions[1]	= 0.34 * height;//0.82 * height;
         } else {
             dimensions[0]	= 0.75 * width;
             dimensions[1]	= 0.75 * height;
@@ -106,7 +106,7 @@ public class InstagramDialog extends Dialog {
         webView.setVerticalScrollBarEnabled(false);
         webView.setHorizontalScrollBarEnabled(false);
         webView.setWebViewClient(new InstagramWebViewClient());
-        webView.getSettings().setJavaScriptEnabled(true);
+        //webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(authenticationUrl);
         webView.setLayoutParams(totalMatch);
 

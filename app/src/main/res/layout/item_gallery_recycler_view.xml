@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<ImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/imageView"
     android:layout_width="match_parent"
-    android:layout_height="160px">
+    android:layout_height="wrap_content"
+    android:scaleType="fitCenter"
+    android:padding="2dp"
+    android:adjustViewBounds="true">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+</ImageView>

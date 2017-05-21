@@ -132,12 +132,12 @@ public class InstagramRequestManager {
         try {
 
             JSONArray jsonArray= new JSONObject(jsonString).getJSONArray("data");
-            JSONObject data;
+            JSONObject images;
             for(int i=0; i<jsonArray.length();i++) {
-                data = (JSONObject) jsonArray.get(i);
-                String thumbnailUrl = data.getJSONObject("images")
-                        .getJSONObject("thumbnail").getString("url");
-                galleryAdapter.addUrl(thumbnailUrl);
+                images = ((JSONObject) jsonArray.get(i)).getJSONObject("images");
+                String thumbnailUrl = images.getJSONObject("thumbnail").getString("url");
+                String photoUrl = images.getJSONObject("standard_resolution").getString("url");
+                galleryAdapter.addUrl(thumbnailUrl,photoUrl);
             }
 
             new Handler(context.getMainLooper()).post(new Runnable(){
