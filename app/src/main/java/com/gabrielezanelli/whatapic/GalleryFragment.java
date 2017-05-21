@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -41,7 +42,7 @@ public class GalleryFragment extends Fragment {
         try {
             ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         } catch (NullPointerException ex) {
-            System.out.println("Failed to show action bar!\n");
+            Toast.makeText(context,R.string.action_bar_fail_hide,Toast.LENGTH_SHORT).show();
         }
     }
 

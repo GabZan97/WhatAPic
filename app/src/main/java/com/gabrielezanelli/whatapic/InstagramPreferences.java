@@ -1,6 +1,5 @@
 package com.gabrielezanelli.whatapic;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.Context;
@@ -32,10 +31,14 @@ public class InstagramPreferences {
     public String accessToken;
 
     public InstagramPreferences(AppCompatActivity activity) {
-        instagramPreferences = activity.getApplicationContext().getSharedPreferences(preferences, Context.MODE_PRIVATE);
+        instagramPreferences = activity.getApplicationContext().
+                getSharedPreferences(preferences, Context.MODE_PRIVATE);
         ButterKnife.bind(this,activity);
     }
 
+    /**
+     * Save user information from static class InstagramUser to shared preferences
+     */
     public void savePreferences() {
         if (instagramUser != null) {
             Editor editor = instagramPreferences.edit();
@@ -50,6 +53,9 @@ public class InstagramPreferences {
         }
     }
 
+    /**
+     * Delete all user information from shared preferences
+     */
     public void deletePreferences() {
         Editor editor = instagramPreferences.edit();
 
@@ -62,20 +68,27 @@ public class InstagramPreferences {
         editor.apply();
     }
 
+    /**
+     * Load user information from shared preferences to static class InstagramUser
+     * @return boolean indicating if loadPreferences was successful or not
+     */
     public boolean loadPreferences() {
-        if (isNew()) {
-            return false;
-        }
+        if (hasSavedData()) {
         instagramUser.id = instagramPreferences.getString(userId, "");
         instagramUser.username = instagramPreferences.getString(username, "");
         instagramUser.fullName = instagramPreferences.getString(fullName, "");
         instagramUser.profilePictureUrl = instagramPreferences.getString(profilePicture, "");
         instagramUser.accessToken = instagramPreferences.getString(accessToken, "");
-
-        return true;
+            return true;
+        }
+        return false;
     }
 
-    public boolean isNew() {
+    /**
+     * Indicate if the user has saved data in shared preferences
+     * @return boolean indicating if the user is has saved data in shared preferences
+     */
+    public boolean hasSavedData() {
         return instagramPreferences.getString(accessToken, "").equals("");
     }
 }

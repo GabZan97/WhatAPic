@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 /**
- * Main activity containing multiple fragments
+ * Main activity containing SignIn and Gallery fragments
  */
 
 public class MainActivity extends AppCompatActivity {

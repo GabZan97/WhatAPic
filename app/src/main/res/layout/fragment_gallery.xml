@@ -9,7 +9,7 @@
         android:id="@+id/introductionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="8dp" />
+        android:layout_marginBottom="@dimen/text_margin" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/galleryRecyclerView"

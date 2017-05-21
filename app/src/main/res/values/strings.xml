@@ -8,6 +8,9 @@
     <string name="help_text">Here you can see some of your favourite photos!</string>
 
     <string name="log_tag">Instagram LOG</string>
+    <string name="action_bar_fail_show">Failed to show action bar</string>
+    <string name="action_bar_fail_hide">Failed to hide action bar</string>
+    <string name="instagram_request_fail">Failed to contact Instagram</string>
 
     <string name="instagram_preferences">key_instagram_shared_preferences</string>
     <string name="preferences_username">key_instagram_shared_preferences_username</string>

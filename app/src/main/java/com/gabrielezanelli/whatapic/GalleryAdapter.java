@@ -14,9 +14,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Recycler view adapter for gallery item
  */
@@ -40,7 +37,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        System.out.println("Binding view n° " + position);
         Picasso.with(viewHolder.context).load(thumbnailUrls.get(position)).into(viewHolder.imageItem);
     }
 
@@ -49,11 +45,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         return thumbnailUrls.size();
     }
 
-    public void addUrl(String thumbnailUrl, String photoUrl) {
+    public void addUrls(String thumbnailUrl, String photoUrl) {
         thumbnailUrls.add(thumbnailUrl);
         photoUrls.add(photoUrl);
-
-        System.out.println("Adding " + thumbnailUrls.size() + "° url: " + thumbnailUrl);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,13 +69,16 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
             });
         }
 
+        /**
+         * Display a dialog with dark transparent background and the fullscreen image in the centre
+         * @param itemPosition the position of the image to display
+         */
         private void showFullScreenImage(int itemPosition) {
-
 
             final Dialog imageDialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
             imageDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             imageDialog.setCancelable(true);
-            imageDialog.setContentView(R.layout.dialog_full_image);
+            imageDialog.setContentView(R.layout.full_screen_image);
 
             ImageView fullScreenImage = (ImageView) imageDialog.findViewById(R.id.imageDialog);
             final ProgressBar loadingBar = (ProgressBar) imageDialog.findViewById(R.id.loadingBar);
@@ -105,12 +102,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
                         @Override
                         public void onError() {
-
+                            loadingBar.setVisibility(View.INVISIBLE);
                         }
                     });
-
-
         }
     }
-
 }

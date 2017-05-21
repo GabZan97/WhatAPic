@@ -3,6 +3,7 @@ package com.gabrielezanelli.whatapic;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.widget.Toast;
 
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.HttpUrl;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
 import static com.gabrielezanelli.whatapic.MainActivity.instagramUser;
 
 /**
- * Class for http request through instagram's api
+ * Class for managing instagram's api through HTTP requests
  */
 
 public class InstagramRequestManager {
@@ -62,7 +63,10 @@ public class InstagramRequestManager {
         return clientInstance;
     }
 
-
+    /**
+     * Build the authentication url for getting user's access token
+     * @return the authentication url
+     */
     public String getAuthenticationUrl() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(authorizationUrl).newBuilder();
         urlBuilder.addQueryParameter(paramClientId, clientId);
@@ -76,6 +80,10 @@ public class InstagramRequestManager {
         return redirectUri;
     }
 
+    /**
+     * Asks instagram for the user's informations using his token
+     * @param token access token of the user
+     */
     public void requestUserInformation(String token) {
 
         OkHttpClient client = getInstance();
@@ -94,6 +102,7 @@ public class InstagramRequestManager {
             @Override
             public void onFailure(Request request, IOException e) {
                 e.printStackTrace();
+                Toast.makeText(context,R.string.instagram_request_fail,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -112,6 +121,10 @@ public class InstagramRequestManager {
         });
     }
 
+    /**
+     * Parse the JSON response from instagram and copy the result in the static class InstagramUser
+     * @param jsonString the JSON response from instagram
+     */
     private void parseAndSetUserInformation(String jsonString) {
         String id = "", username = "", fullName = "", profilePictureUrl = "";
         try {
@@ -127,10 +140,12 @@ public class InstagramRequestManager {
         }
 
         instagramUser.setUserInformation(id, username, fullName, profilePictureUrl);
-
-        // TODO: Save settings in shared preferences
     }
 
+    /**
+     * Asks instagram for the user's recent photos using his token
+     * @param galleryAdapter The RecyclerViewAdapter for loading photos
+     */
     public void requestUserPhotos(final GalleryAdapter galleryAdapter) {
         OkHttpClient client = getInstance();
 
@@ -147,6 +162,7 @@ public class InstagramRequestManager {
             @Override
             public void onFailure(Request request, IOException e) {
                 e.printStackTrace();
+                Toast.makeText(context,R.string.instagram_request_fail,Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -163,6 +179,11 @@ public class InstagramRequestManager {
         });
     }
 
+    /**
+     * Parse the JSON response from instagram into photo urls and adds them into the adapter's structure
+     * @param jsonString the JSON response from instagram
+     * @param galleryAdapter The RecyclerViewAdapter for loading photos
+     */
     private void parseAndAddUserPhotosUrls(String jsonString, final GalleryAdapter galleryAdapter) {
         try {
 
@@ -172,7 +193,7 @@ public class InstagramRequestManager {
                 images = ((JSONObject) jsonArray.get(i)).getJSONObject("images");
                 String thumbnailUrl = images.getJSONObject("thumbnail").getString("url");
                 String photoUrl = images.getJSONObject("standard_resolution").getString("url");
-                galleryAdapter.addUrl(thumbnailUrl, photoUrl);
+                galleryAdapter.addUrls(thumbnailUrl, photoUrl);
             }
 
             new Handler(context.getMainLooper()).post(new Runnable() {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,12 +40,14 @@ public class SignInFragment extends Fragment {
         try {
             ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         } catch (NullPointerException ex) {
-            System.out.println("Failed to hide action bar");
+            Toast.makeText(container.getContext(),R.string.action_bar_fail_show, Toast.LENGTH_SHORT).show();
         }
-
         return view;
     }
 
+    /**
+     * Display a dialog containing the instagram WebView for authorizing the application
+     */
     private void attemptInstagramWebAuthorization() {
         final InstagramRequestManager instagramRequestManager = new InstagramRequestManager(getActivity());
         String authUrl = instagramRequestManager.getAuthenticationUrl();
@@ -57,7 +60,6 @@ public class SignInFragment extends Fragment {
                 System.out.print("Success! The token is: " + token + "\n");
 
                 instagramRequestManager.requestUserInformation(token);
-
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container, new GalleryFragment()).commit();
             }
 
@@ -74,5 +76,4 @@ public class SignInFragment extends Fragment {
 
         instagramDialog.show();
     }
-
 }

@@ -1,7 +1,7 @@
 package com.gabrielezanelli.whatapic;
 
 /**
- * Class representing user
+ * Static class representing the user
  */
 
 public class InstagramUser {
@@ -22,6 +22,4 @@ public class InstagramUser {
         this.fullName = fullName;
         this.profilePictureUrl = profilePictureUrl;
     }
-
-
 }

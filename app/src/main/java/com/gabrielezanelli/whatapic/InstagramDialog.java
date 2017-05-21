@@ -8,7 +8,6 @@ import android.graphics.Point;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.content.Context;
 
 import android.view.Display;
@@ -105,14 +104,11 @@ public class InstagramDialog extends Dialog {
         webView.setVerticalScrollBarEnabled(false);
         webView.setHorizontalScrollBarEnabled(false);
         webView.setWebViewClient(new InstagramWebViewClient());
-        //webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(authenticationUrl);
         webView.setLayoutParams(totalMatch);
 
         WebSettings webSettings = webView.getSettings();
-
         webSettings.setSaveFormData(false);
-        webSettings.setSavePassword(false);
 
         linearLayout.addView(webView);
     }
@@ -127,18 +123,14 @@ public class InstagramDialog extends Dialog {
     public void onBackPressed() {
         super.onBackPressed();
         instagramListener.onCancel();
-
     }
 
     private class InstagramWebViewClient extends WebViewClient {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            if (Build.VERSION.SDK_INT > 18) {
-
+            if (Build.VERSION.SDK_INT >= 21) {
                 String url = request.getUrl().toString();
-
-                Log.d(TAG, "Redirecting URL " + url);
 
                 if (url.startsWith(redirectUri)) {
                     if (url.contains("access_token")) {
@@ -150,8 +142,7 @@ public class InstagramDialog extends Dialog {
 
                         instagramListener.onError(temp[temp.length - 1]);
                     }
-
-                    InstagramDialog.this.dismiss();
+                    dismiss();
                     return true;
                 }
                 return false;
@@ -159,11 +150,10 @@ public class InstagramDialog extends Dialog {
                 return super.shouldOverrideUrlLoading(view, request);
         }
 
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (Build.VERSION.SDK_INT <= 18) {
-
-                Log.d(TAG, "Redirecting URL " + url);
+            if (Build.VERSION.SDK_INT < 21) {
 
                 if (url.startsWith(redirectUri)) {
                     if (url.contains("access_token")) {
@@ -175,8 +165,7 @@ public class InstagramDialog extends Dialog {
 
                         instagramListener.onError(temp[temp.length - 1]);
                     }
-
-                    InstagramDialog.this.dismiss();
+                    dismiss();
                     return true;
                 }
                 return false;
@@ -189,33 +178,26 @@ public class InstagramDialog extends Dialog {
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
             instagramListener.onError(error.toString());
-            Log.d(TAG, "Request error: " + error.toString());
 
-            InstagramDialog.this.dismiss();
+            dismiss();
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-
             loadingDialog.show();
-
-            Log.d(TAG, "Loading URL: " + url);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-
             loadingDialog.dismiss();
         }
     }
 
     public interface InstagramDialogListener {
         void onSuccess(String token);
-
         void onCancel();
-
         void onError(String error);
     }
 }

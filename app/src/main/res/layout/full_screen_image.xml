@@ -13,13 +13,12 @@
         android:layout_centerInParent="true"
         />
 
-
     <ImageView
         android:id="@+id/imageDialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_margin="4dp" />
+        android:layout_margin="@dimen/full_screen_image_margin" />
 
 </RelativeLayout>
