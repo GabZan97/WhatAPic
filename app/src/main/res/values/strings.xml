@@ -6,8 +6,8 @@
     <string name="loading_message">Logging in…</string>
     <string name="welcome_text">Welcome back</string>
     <string name="help_text">Here you can see some of your favourite photos!</string>
+    <string name="logout_text">Logout</string>
 
-    <string name="log_tag">Instagram LOG</string>
     <string name="action_bar_fail_show">Failed to show action bar</string>
     <string name="action_bar_fail_hide">Failed to hide action bar</string>
     <string name="instagram_request_fail">Failed to contact Instagram</string>

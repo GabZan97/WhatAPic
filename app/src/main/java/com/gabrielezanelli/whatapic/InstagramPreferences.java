@@ -89,6 +89,6 @@ public class InstagramPreferences {
      * @return boolean indicating if the user is has saved data in shared preferences
      */
     public boolean hasSavedData() {
-        return instagramPreferences.getString(accessToken, "").equals("");
+        return !instagramPreferences.getString(accessToken, "").equals("");
     }
 }

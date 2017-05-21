@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/welcome"
-        android:theme="@style/Title" />
+        android:theme="@style/WhatATitle" />
 
     <TextView
         android:layout_width="match_parent"

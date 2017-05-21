@@ -116,8 +116,6 @@ public class InstagramRequestManager {
                     parseAndSetUserInformation(jsonString);
                 }
             }
-
-
         });
     }
 

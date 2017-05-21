@@ -1,7 +1,7 @@
 package com.gabrielezanelli.whatapic;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +60,10 @@ public class SignInFragment extends Fragment {
                 System.out.print("Success! The token is: " + token + "\n");
 
                 instagramRequestManager.requestUserInformation(token);
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new GalleryFragment()).commit();
+
+                getFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right,0)
+                        .replace(R.id.fragment_container, new GalleryFragment()).commit();
             }
 
             @Override

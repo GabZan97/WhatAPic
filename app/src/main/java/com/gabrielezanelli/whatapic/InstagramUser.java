@@ -22,4 +22,12 @@ public class InstagramUser {
         this.fullName = fullName;
         this.profilePictureUrl = profilePictureUrl;
     }
+
+    public void deleteInformations() {
+        id = "";
+        username = "";
+        fullName = "";
+        profilePictureUrl = "";
+        accessToken = "";
+    }
 }

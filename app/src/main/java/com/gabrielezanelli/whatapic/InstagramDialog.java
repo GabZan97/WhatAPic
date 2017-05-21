@@ -39,12 +39,10 @@ public class InstagramDialog extends Dialog {
 
     private InstagramDialogListener instagramListener;
 
-    static final FrameLayout.LayoutParams totalMatch = new FrameLayout.LayoutParams(
+    private static final FrameLayout.LayoutParams totalMatch = new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT);
 
-    @BindString(R.string.log_tag)
-    String TAG;
     @BindString(R.string.loading_message)
     String loadingMessage;
 
@@ -89,7 +87,7 @@ public class InstagramDialog extends Dialog {
 
         if (width < height) {
             dimensions[0] = 0.87 * width;
-            dimensions[1] = 0.34 * height;//0.82 * height;
+            dimensions[1] = 0.45 * height;//0.82 * height;
         } else {
             dimensions[0] = 0.75 * width;
             dimensions[1] = 0.75 * height;
