@@ -1,10 +1,13 @@
 package com.gabrielezanelli.whatapic;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 
 import butterknife.BindString;
+import butterknife.ButterKnife;
 
 import static com.gabrielezanelli.whatapic.MainActivity.instagramUser;
 
@@ -16,32 +19,32 @@ public class InstagramPreferences {
     private static SharedPreferences instagramPreferences;
 
     @BindString(R.string.instagram_preferences)
-    String preferences;
+    public String preferences;
     @BindString(R.string.preferences_user_id)
-    String userId;
+    public String userId;
     @BindString(R.string.preferences_username)
-    String username;
+    public String username;
     @BindString(R.string.preferences_fullname)
-    String fullName;
+    public String fullName;
     @BindString(R.string.preferences_profile_pic)
-    String profilePicture;
+    public String profilePicture;
     @BindString(R.string.preferences_access_token)
-    String accessToken;
+    public String accessToken;
 
-    public InstagramPreferences(Context context) {
-        instagramPreferences = context.getSharedPreferences(preferences, Context.MODE_PRIVATE);
+    public InstagramPreferences(AppCompatActivity activity) {
+        instagramPreferences = activity.getApplicationContext().getSharedPreferences(preferences, Context.MODE_PRIVATE);
+        ButterKnife.bind(this,activity);
     }
 
     public void savePreferences() {
-        InstagramUser user = instagramUser;
-        if (user != null) {
+        if (instagramUser != null) {
             Editor editor = instagramPreferences.edit();
 
-            editor.putString(accessToken, user.accessToken);
-            editor.putString(userId, user.id);
-            editor.putString(username, user.username);
-            editor.putString(fullName, user.fullName);
-            editor.putString(profilePicture, user.profilePictureUrl);
+            editor.putString(accessToken, instagramUser.accessToken);
+            editor.putString(userId, instagramUser.id);
+            editor.putString(username, instagramUser.username);
+            editor.putString(fullName, instagramUser.fullName);
+            editor.putString(profilePicture, instagramUser.profilePictureUrl);
 
             editor.apply();
         }
@@ -59,28 +62,20 @@ public class InstagramPreferences {
         editor.apply();
     }
 
-    public InstagramUser getUserFromPreferences() {
-        if (instagramPreferences.getString(accessToken, "").equals("")) {
-            return null;
+    public boolean loadPreferences() {
+        if (isNew()) {
+            return false;
         }
+        instagramUser.id = instagramPreferences.getString(userId, "");
+        instagramUser.username = instagramPreferences.getString(username, "");
+        instagramUser.fullName = instagramPreferences.getString(fullName, "");
+        instagramUser.profilePictureUrl = instagramPreferences.getString(profilePicture, "");
+        instagramUser.accessToken = instagramPreferences.getString(accessToken, "");
 
-        InstagramUser user = new InstagramUser();
-
-        user.id = instagramPreferences.getString(userId, "");
-        user.username = instagramPreferences.getString(username, "");
-        user.fullName = instagramPreferences.getString(fullName, "");
-        user.profilePictureUrl = instagramPreferences.getString(profilePicture, "");
-        user.accessToken = instagramPreferences.getString(accessToken, "");
-
-        return user;
+        return true;
     }
 
-    public String getAccessToken() {
-        return instagramPreferences.getString(accessToken, "");
-    }
-
-
-    public boolean isActive() {
-        return !instagramPreferences.getString(accessToken, "").equals("");
+    public boolean isNew() {
+        return instagramPreferences.getString(accessToken, "").equals("");
     }
 }

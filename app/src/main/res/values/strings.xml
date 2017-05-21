@@ -16,6 +16,10 @@
     <string name="preferences_access_token">key_instagram_shared_preferences_access_token</string>
     <string name="preferences_profile_pic">key_instagram_shared_preferences_profile_pic</string>
 
+    <string name="parameter_client_id">client_id</string>
+    <string name="parameter_redirect_uri">redirect_uri</string>
+    <string name="parameter_response_type">response_type</string>
+    <string name="parameter_access_token">access_token</string>
     <string name="client_id">782272ecc6664711870a7d33847decd1</string>
     <string name="redirect_uri">http://www.whatapic.com/signin</string>
     <string name="instagram_api_authorization">https://api.instagram.com/oauth/authorize</string>

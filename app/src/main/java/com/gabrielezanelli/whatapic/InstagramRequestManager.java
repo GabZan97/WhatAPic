@@ -31,6 +31,22 @@ public class InstagramRequestManager {
     String userInfoUrl;
     @BindString(R.string.instagram_api_user_media)
     String userMediaUrl;
+    @BindString(R.string.instagram_api_authorization)
+    String authorizationUrl;
+    @BindString(R.string.parameter_client_id)
+    String paramClientId;
+    @BindString(R.string.parameter_redirect_uri)
+    String paramRedirectUri;
+    @BindString(R.string.parameter_response_type)
+    String paramResponseType;
+    @BindString(R.string.parameter_access_token)
+    String paramAccessToken;
+    @BindString(R.string.client_id)
+    String clientId;
+    @BindString(R.string.redirect_uri)
+    String redirectUri;
+    @BindString(R.string.response_type)
+    String responseType;
 
     private static OkHttpClient clientInstance;
     private Context context;
@@ -46,11 +62,27 @@ public class InstagramRequestManager {
         return clientInstance;
     }
 
-    public void requestUserInformation() {
+
+    public String getAuthenticationUrl() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(authorizationUrl).newBuilder();
+        urlBuilder.addQueryParameter(paramClientId, clientId);
+        urlBuilder.addQueryParameter(paramRedirectUri, redirectUri);
+        urlBuilder.addQueryParameter(paramResponseType, responseType);
+
+        return urlBuilder.build().toString();
+    }
+
+    public String getRedirectUri() {
+        return redirectUri;
+    }
+
+    public void requestUserInformation(String token) {
+
         OkHttpClient client = getInstance();
 
+        instagramUser.accessToken = token;
         HttpUrl.Builder urlBuilder = HttpUrl.parse(userInfoUrl).newBuilder();
-        urlBuilder.addQueryParameter("access_token", instagramUser.getAccessToken());
+        urlBuilder.addQueryParameter(paramAccessToken, instagramUser.accessToken);
 
         String url = urlBuilder.build().toString();
 
@@ -95,6 +127,7 @@ public class InstagramRequestManager {
         }
 
         instagramUser.setUserInformation(id, username, fullName, profilePictureUrl);
+
         // TODO: Save settings in shared preferences
     }
 
@@ -102,7 +135,7 @@ public class InstagramRequestManager {
         OkHttpClient client = getInstance();
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse(userMediaUrl).newBuilder();
-        urlBuilder.addQueryParameter("access_token", instagramUser.getAccessToken());
+        urlBuilder.addQueryParameter("access_token", instagramUser.accessToken);
 
         String url = urlBuilder.build().toString();
 
@@ -124,13 +157,13 @@ public class InstagramRequestManager {
                     String jsonString = response.body().string();
                     System.out.println("Request was Successful");
 
-                    parseAndAddUserPhotos(jsonString, galleryAdapter);
+                    parseAndAddUserPhotosUrls(jsonString, galleryAdapter);
                 }
             }
         });
     }
 
-    private void parseAndAddUserPhotos(String jsonString, final GalleryAdapter galleryAdapter) {
+    private void parseAndAddUserPhotosUrls(String jsonString, final GalleryAdapter galleryAdapter) {
         try {
 
             JSONArray jsonArray = new JSONObject(jsonString).getJSONArray("data");

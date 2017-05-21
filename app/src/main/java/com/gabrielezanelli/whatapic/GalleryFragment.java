@@ -1,7 +1,9 @@
 package com.gabrielezanelli.whatapic;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,8 +36,13 @@ public class GalleryFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        } catch (NullPointerException ex) {
+            System.out.println("Failed to show action bar!\n");
+        }
     }
 
     @Override

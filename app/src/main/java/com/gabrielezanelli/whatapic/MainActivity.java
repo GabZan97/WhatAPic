@@ -3,8 +3,6 @@ package com.gabrielezanelli.whatapic;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import butterknife.ButterKnife;
-
 /**
  * Main activity containing multiple fragments
  */
@@ -12,25 +10,26 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     public static InstagramUser instagramUser = new InstagramUser();
+    private InstagramPreferences instagramPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
-        InstagramPreferences instagramPreferences = new InstagramPreferences(this);
+        instagramPreferences = new InstagramPreferences(this);
 
-        try {
-            getSupportActionBar().hide();
-        } catch (NullPointerException ex) {
-            System.out.println("Failed to hide action bar");
-        }
-
-        if (savedInstanceState == null)
+        if(instagramPreferences.loadPreferences())
+            getFragmentManager().beginTransaction().add(
+                    R.id.fragment_container, new GalleryFragment()).commit();
+        else
             getFragmentManager().beginTransaction().add(
                     R.id.fragment_container, new SignInFragment()).commit();
-
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        instagramPreferences.savePreferences();
+    }
 }

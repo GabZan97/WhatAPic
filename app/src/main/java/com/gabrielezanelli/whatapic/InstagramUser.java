@@ -16,15 +16,6 @@ public class InstagramUser {
 
     }
 
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
     public void setUserInformation(String id, String username, String fullName, String profilePictureUrl) {
         this.id = id;
         this.username = username;
