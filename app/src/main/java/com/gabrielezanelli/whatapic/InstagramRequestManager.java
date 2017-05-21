@@ -27,15 +27,17 @@ import static com.gabrielezanelli.whatapic.MainActivity.instagramUser;
 
 public class InstagramRequestManager {
 
-    @BindString(R.string.instagram_api_user_information) String userInfoUrl;
-    @BindString(R.string.instagram_api_user_media) String userMediaUrl;
+    @BindString(R.string.instagram_api_user_information)
+    String userInfoUrl;
+    @BindString(R.string.instagram_api_user_media)
+    String userMediaUrl;
 
     private static OkHttpClient clientInstance;
     private Context context;
 
-    public InstagramRequestManager(Activity activity){
+    public InstagramRequestManager(Activity activity) {
         context = activity.getApplicationContext();
-        ButterKnife.bind(this,activity);
+        ButterKnife.bind(this, activity);
     }
 
     private static OkHttpClient getInstance() {
@@ -78,7 +80,7 @@ public class InstagramRequestManager {
         });
     }
 
-    private void parseAndSetUserInformation(String jsonString){
+    private void parseAndSetUserInformation(String jsonString) {
         String id = "", username = "", fullName = "", profilePictureUrl = "";
         try {
             JSONObject json = new JSONObject(jsonString);
@@ -92,7 +94,7 @@ public class InstagramRequestManager {
             e.printStackTrace();
         }
 
-        instagramUser.setUserInformation(id,username,fullName,profilePictureUrl);
+        instagramUser.setUserInformation(id, username, fullName, profilePictureUrl);
         // TODO: Save settings in shared preferences
     }
 
@@ -122,31 +124,30 @@ public class InstagramRequestManager {
                     String jsonString = response.body().string();
                     System.out.println("Request was Successful");
 
-                    parseAndAddUserPhotos(jsonString,galleryAdapter);
+                    parseAndAddUserPhotos(jsonString, galleryAdapter);
                 }
             }
         });
     }
 
-    private void parseAndAddUserPhotos (String jsonString, final GalleryAdapter galleryAdapter) {
+    private void parseAndAddUserPhotos(String jsonString, final GalleryAdapter galleryAdapter) {
         try {
 
-            JSONArray jsonArray= new JSONObject(jsonString).getJSONArray("data");
+            JSONArray jsonArray = new JSONObject(jsonString).getJSONArray("data");
             JSONObject images;
-            for(int i=0; i<jsonArray.length();i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 images = ((JSONObject) jsonArray.get(i)).getJSONObject("images");
                 String thumbnailUrl = images.getJSONObject("thumbnail").getString("url");
                 String photoUrl = images.getJSONObject("standard_resolution").getString("url");
-                galleryAdapter.addUrl(thumbnailUrl,photoUrl);
+                galleryAdapter.addUrl(thumbnailUrl, photoUrl);
             }
 
-            new Handler(context.getMainLooper()).post(new Runnable(){
-                public void run(){
+            new Handler(context.getMainLooper()).post(new Runnable() {
+                public void run() {
                     galleryAdapter.notifyDataSetChanged();
                 }
             });
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

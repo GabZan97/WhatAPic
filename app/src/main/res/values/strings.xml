@@ -1,15 +1,11 @@
 <resources>
     <string name="app_name">What a Pic!</string>
-    <string name="activity_login_title">Sign in</string>
-    <string name="activity_gallery_title">My photos</string>
-
-    <string name="prompt_username">Username</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
 
     <string name="welcome">Welcome to What a Pic!</string>
     <string name="sign_in">Please sign in to your Instagram account to see all your beautiful photos</string>
-    <string name="loading_message">Loading…</string>
+    <string name="loading_message">Logging in…</string>
+    <string name="welcome_text">Welcome back</string>
+    <string name="help_text">Here you can see some of your favourite photos!</string>
 
     <string name="log_tag">Instagram LOG</string>
 
@@ -26,5 +22,6 @@
     <string name="instagram_api_user_information">https://api.instagram.com/v1/users/self</string>
     <string name="instagram_api_user_media">https://api.instagram.com/v1/users/self/media/recent</string>
     <string name="response_type">token</string>
+    <string name="api_callback">change this</string>
 
 </resources>

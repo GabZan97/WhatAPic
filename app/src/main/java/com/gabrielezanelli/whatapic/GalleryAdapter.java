@@ -8,16 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Recycler view adapter for gallery item
  */
 
-public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder>{
+public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private ArrayList<String> thumbnailUrls;
     private ArrayList<String> photoUrls;
 
@@ -30,14 +34,14 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     public GalleryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                         int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_gallery_recycler_view, parent,false);
-        return new ViewHolder(layoutView,parent.getContext());
+                .inflate(R.layout.item_gallery_recycler_view, parent, false);
+        return new ViewHolder(layoutView, parent.getContext());
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        System.out.println("Binding view n° "+position);
-        Picasso.with(viewHolder.context).load(thumbnailUrls.get(position)).into(viewHolder.imageView);
+        System.out.println("Binding view n° " + position);
+        Picasso.with(viewHolder.context).load(thumbnailUrls.get(position)).into(viewHolder.imageItem);
     }
 
     @Override
@@ -45,24 +49,25 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         return thumbnailUrls.size();
     }
 
-    public void addUrl(String thumbnailUrl, String photoUrl){
+    public void addUrl(String thumbnailUrl, String photoUrl) {
         thumbnailUrls.add(thumbnailUrl);
         photoUrls.add(photoUrl);
 
-        System.out.println("Adding "+ thumbnailUrls.size() +"° url: "+thumbnailUrl);
+        System.out.println("Adding " + thumbnailUrls.size() + "° url: " + thumbnailUrl);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imageView;
+        private ImageView imageItem;
         private Context context;
 
         public ViewHolder(View layoutView, final Context context) {
             super(layoutView);
             this.context = context;
-            imageView = (ImageView) layoutView.findViewById(R.id.imageView);
 
-            imageView.setOnClickListener(new View.OnClickListener() {
+            imageItem = (ImageView) layoutView.findViewById(R.id.imageItem);
+
+            imageItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showFullScreenImage(getLayoutPosition());
@@ -71,13 +76,40 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         }
 
         private void showFullScreenImage(int itemPosition) {
-            Dialog imageDialog = new Dialog(context,android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+
+
+            final Dialog imageDialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
             imageDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             imageDialog.setCancelable(true);
             imageDialog.setContentView(R.layout.dialog_full_image);
-            imageView = (ImageView)imageDialog.findViewById(R.id.imageViewDialog);
-            Picasso.with(context).load(photoUrls.get(itemPosition)).placeholder(R.drawable.progress_animation).into(imageView);
+
+            ImageView fullScreenImage = (ImageView) imageDialog.findViewById(R.id.imageDialog);
+            final ProgressBar loadingBar = (ProgressBar) imageDialog.findViewById(R.id.loadingBar);
+
+            fullScreenImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageDialog.dismiss();
+                }
+            });
             imageDialog.show();
+
+            loadingBar.setVisibility(View.VISIBLE);
+
+            Picasso.with(context).load(photoUrls.get(itemPosition)).into(fullScreenImage,
+                    new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            loadingBar.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+
+
         }
     }
 

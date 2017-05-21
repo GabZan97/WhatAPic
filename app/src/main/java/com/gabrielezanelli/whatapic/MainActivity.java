@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null)
             getFragmentManager().beginTransaction().add(
-                    R.id.fragment_container,new SignInFragment()).commit();
+                    R.id.fragment_container, new SignInFragment()).commit();
 
     }
 

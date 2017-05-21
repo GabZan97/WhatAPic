@@ -1,48 +1,44 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context="com.gabrielezanelli.whatapic.SignInFragment">
 
-    <LinearLayout
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:layout_height="0dp"
+        android:layout_weight="3" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/welcome"
+        android:theme="@style/Title" />
 
-        <TextView
-            android:text="@string/welcome"
-            android:theme="@style/Title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/sign_in" />
 
-        <TextView
-            android:text="@string/sign_in"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"/>
+    <ImageButton
+        android:id="@+id/button_sign_in"
+        android:layout_width="@dimen/instagram_icon"
+        android:layout_height="@dimen/instagram_icon"
 
-        <ImageButton
-            android:id="@+id/button_sign_in"
-            android:background="@null"
-            android:src="@drawable/instagram_icon"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/instagram_icon" />
 
-            android:layout_width="@dimen/instagram_icon"
-            android:layout_height="@dimen/instagram_icon"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4" />
+</LinearLayout>
 
-    </LinearLayout>
-</FrameLayout>

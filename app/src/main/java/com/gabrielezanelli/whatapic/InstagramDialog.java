@@ -1,13 +1,11 @@
 package com.gabrielezanelli.whatapic;
 
-import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
 
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,8 +44,10 @@ public class InstagramDialog extends Dialog {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT);
 
-    @BindString(R.string.log_tag) String TAG;
-    @BindString(R.string.loading_message) String loadingMessage;
+    @BindString(R.string.log_tag)
+    String TAG;
+    @BindString(R.string.loading_message)
+    String loadingMessage;
 
     public InstagramDialog(Context context, String authenticationUrl, String redirectUri,
                            InstagramDialogListener instagramListener) {
@@ -65,13 +65,12 @@ public class InstagramDialog extends Dialog {
         ButterKnife.bind(this);
 
         loadingDialog = new ProgressDialog(getContext());
-
         loadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         loadingDialog.setMessage(loadingMessage);
 
         linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setPadding(20,20,20,20);
+        linearLayout.setPadding(20, 20, 20, 20);
 
         setUpWebView();
 
@@ -86,15 +85,15 @@ public class InstagramDialog extends Dialog {
 
         display.getSize(outSize);
 
-        width	= outSize.x;
-        height	= outSize.y;
+        width = outSize.x;
+        height = outSize.y;
 
         if (width < height) {
-            dimensions[0]	= 0.87 * width;
-            dimensions[1]	= 0.34 * height;//0.82 * height;
+            dimensions[0] = 0.87 * width;
+            dimensions[1] = 0.34 * height;//0.82 * height;
         } else {
-            dimensions[0]	= 0.75 * width;
-            dimensions[1]	= 0.75 * height;
+            dimensions[0] = 0.75 * width;
+            dimensions[1] = 0.75 * height;
         }
 
         addContentView(linearLayout, new FrameLayout.LayoutParams((int) dimensions[0], (int) dimensions[1]));
@@ -156,8 +155,7 @@ public class InstagramDialog extends Dialog {
                     return true;
                 }
                 return false;
-            }
-            else
+            } else
                 return super.shouldOverrideUrlLoading(view, request);
         }
 
@@ -182,15 +180,13 @@ public class InstagramDialog extends Dialog {
                     return true;
                 }
                 return false;
-            }
-            else
+            } else
                 return super.shouldOverrideUrlLoading(view, url);
         }
 
 
-
         @Override
-        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error ) {
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
             instagramListener.onError(error.toString());
             Log.d(TAG, "Request error: " + error.toString());
@@ -216,8 +212,10 @@ public class InstagramDialog extends Dialog {
     }
 
     public interface InstagramDialogListener {
-        public abstract void onSuccess(String token);
-        public abstract void onCancel();
-        public abstract void onError(String error);
+        void onSuccess(String token);
+
+        void onCancel();
+
+        void onError(String error);
     }
 }

@@ -12,7 +12,7 @@ public class InstagramUser {
     public String accessToken;
 
 
-    public InstagramUser(){
+    public InstagramUser() {
 
     }
 
@@ -21,11 +21,11 @@ public class InstagramUser {
         return accessToken;
     }
 
-    public void setAccessToken(String accessToken){
+    public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 
-    public void setUserInformation(String id, String username, String fullName, String profilePictureUrl){
+    public void setUserInformation(String id, String username, String fullName, String profilePictureUrl) {
         this.id = id;
         this.username = username;
         this.fullName = fullName;

@@ -15,12 +15,18 @@ import static com.gabrielezanelli.whatapic.MainActivity.instagramUser;
 public class InstagramPreferences {
     private static SharedPreferences instagramPreferences;
 
-    @BindString (R.string.instagram_preferences) String preferences;
-    @BindString (R.string.preferences_user_id) String userId;
-    @BindString (R.string.preferences_username) String username;
-    @BindString (R.string.preferences_fullname)  String fullName;
-    @BindString (R.string.preferences_profile_pic) String profilePicture;
-    @BindString (R.string.preferences_access_token) String accessToken;
+    @BindString(R.string.instagram_preferences)
+    String preferences;
+    @BindString(R.string.preferences_user_id)
+    String userId;
+    @BindString(R.string.preferences_username)
+    String username;
+    @BindString(R.string.preferences_fullname)
+    String fullName;
+    @BindString(R.string.preferences_profile_pic)
+    String profilePicture;
+    @BindString(R.string.preferences_access_token)
+    String accessToken;
 
     public InstagramPreferences(Context context) {
         instagramPreferences = context.getSharedPreferences(preferences, Context.MODE_PRIVATE);
@@ -58,9 +64,9 @@ public class InstagramPreferences {
             return null;
         }
 
-        InstagramUser user 	= new InstagramUser();
+        InstagramUser user = new InstagramUser();
 
-        user.id	= instagramPreferences.getString(userId, "");
+        user.id = instagramPreferences.getString(userId, "");
         user.username = instagramPreferences.getString(username, "");
         user.fullName = instagramPreferences.getString(fullName, "");
         user.profilePictureUrl = instagramPreferences.getString(profilePicture, "");
